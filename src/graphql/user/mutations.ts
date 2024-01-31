@@ -3,7 +3,6 @@ export const mutations = `#graphql
     username: String!,
     firstName: String!,
     lastName: String,
-    profileImageURL: String,
     email: String!,
     password: String!
   ): String

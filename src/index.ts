@@ -1,7 +1,7 @@
 import express from "express"
 import path from "path"
 import { expressMiddleware } from "@apollo/server/express4"
-// import cors from "cors"
+import cors from "cors"
 import dotenv from "dotenv"
 import createApolloGraphQLServer from "./graphql"
 import UserService from "./services/user"
@@ -13,14 +13,14 @@ async function init() {
   const app = express()
   const PORT = process.env.PORT || 8000
 
-  // app.use(
-  //   cors({
-  //     origin: "http://localhost:5173",
-  //     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  //     credentials: true,
-  //     optionsSuccessStatus: 204,
-  //   })
-  // )
+  app.use(
+    cors({
+      origin: "http://localhost:5173",
+      methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+      credentials: true,
+      optionsSuccessStatus: 204,
+    })
+  )
   app.use(express.json())
 
   app.get("/", (req, res) => {

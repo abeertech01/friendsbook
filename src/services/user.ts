@@ -8,7 +8,6 @@ export interface CreateUserPayload {
   username: string
   firstName: string
   lastName?: string
-  profileImageURL?: string
   email: string
   password: string
 }
@@ -32,8 +31,7 @@ class UserService {
   }
 
   public static createUser(payload: CreateUserPayload) {
-    const { username, firstName, lastName, profileImageURL, email, password } =
-      payload
+    const { username, firstName, lastName, email, password } = payload
     const salt = randomBytes(35).toString("hex")
     const hashedPassword = UserService.generateHash(salt, password)
 
@@ -42,7 +40,6 @@ class UserService {
         username,
         firstName,
         lastName,
-        profileImageURL,
         email,
         password: hashedPassword,
         salt,
