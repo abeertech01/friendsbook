@@ -30,12 +30,12 @@ class UserService {
     })
   }
 
-  public static createUser(payload: CreateUserPayload) {
+  public static async createUser(payload: CreateUserPayload) {
     const { username, firstName, lastName, email, password } = payload
     const salt = randomBytes(35).toString("hex")
     const hashedPassword = UserService.generateHash(salt, password)
 
-    return prismadb.user.create({
+    const user = await prismadb.user.create({
       data: {
         username,
         firstName,
@@ -45,6 +45,17 @@ class UserService {
         salt,
       },
     })
+
+    // Generate the token
+    const token = await JWT.sign(
+      {
+        id: user.id,
+        email,
+      },
+      JWT_SECRET
+    )
+
+    return token
   }
 
   private static getUserByEmail(email: string) {
