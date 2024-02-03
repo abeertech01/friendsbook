@@ -3,7 +3,17 @@ import PostService, {
   AddCommentPayload,
 } from "../../services/post"
 
-const queries = {}
+const queries = {
+  getPosts: async (_: any, _2: any, context: any) => {
+    if (context && context.success) {
+      const allPosts = await PostService.getAllPosts()
+
+      return allPosts
+    }
+
+    throw new Error("User is not authorized")
+  },
+}
 
 const mutations = {
   async addPost(_: any, payload: AddPostPayload, context: any) {

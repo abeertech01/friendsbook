@@ -1,5 +1,6 @@
 import { typeDefs } from "./typeDefs"
+import { queries } from "./queries"
 import { mutations } from "./mutations"
 import { resolvers } from "./resolvers"
 
-export const Post = { typeDefs, mutations, resolvers }
+export const Post = { typeDefs, queries, mutations, resolvers }

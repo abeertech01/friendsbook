@@ -36,7 +36,7 @@ async function init() {
         const token = req.headers["token"]
 
         try {
-          const user = UserService.decodeJWTToken(token as string)
+          const user = await UserService.decodeJWTToken(token as string)
 
           return { success: true, user }
         } catch (error) {

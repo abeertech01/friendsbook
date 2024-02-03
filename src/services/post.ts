@@ -13,6 +13,12 @@ export interface AddCommentPayload {
 }
 
 class PostService {
+  public static async getAllPosts() {
+    const posts = await prismadb.post.findMany()
+
+    return posts
+  }
+
   public static addPost(payload: AddPostPayload, id: string) {
     const { title, content } = payload
 

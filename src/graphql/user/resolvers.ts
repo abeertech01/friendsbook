@@ -1,6 +1,7 @@
 import UserService, { CreateUserPayload } from "../../services/user"
 
 const queries = {
+  helloU: () => "This is my hello from user",
   getUserToken: async (
     _: any,
     payload: { email: string; password: string }
