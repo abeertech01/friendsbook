@@ -1,6 +1,5 @@
 export const mutations = `#graphql
   addPost(
-    title: String!,
     content: String!
   ): Post
 

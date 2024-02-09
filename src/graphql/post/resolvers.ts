@@ -7,6 +7,7 @@ const queries = {
   getPosts: async (_: any, _2: any, context: any) => {
     if (context && context.success) {
       const allPosts = await PostService.getAllPosts()
+      console.log(allPosts)
 
       return allPosts
     }
