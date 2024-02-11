@@ -50,7 +50,10 @@ class UserService {
     const token = await JWT.sign(
       {
         id: user.id,
-        email,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
       },
       JWT_SECRET
     )
@@ -80,6 +83,9 @@ class UserService {
     const token = JWT.sign(
       {
         id: user.id,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
       },
       JWT_SECRET
