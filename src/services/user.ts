@@ -30,6 +30,10 @@ class UserService {
     })
   }
 
+  public static async getUsers() {
+    return await prismadb.user.findMany()
+  }
+
   public static async createUser(payload: CreateUserPayload) {
     const { username, firstName, lastName, email, password } = payload
     const salt = randomBytes(35).toString("hex")

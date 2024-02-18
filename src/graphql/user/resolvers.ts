@@ -2,6 +2,15 @@ import UserService, { CreateUserPayload } from "../../services/user"
 
 const queries = {
   helloU: () => "This is my hello from user",
+  getUsers: async (_: any, _2: any, context: any) => {
+    if (context && context.success) {
+      const allUsers = await UserService.getUsers()
+
+      return allUsers
+    }
+
+    throw new Error("User is not authorized")
+  },
   getUserToken: async (
     _: any,
     payload: { email: string; password: string }
