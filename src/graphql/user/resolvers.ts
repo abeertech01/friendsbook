@@ -4,9 +4,7 @@ const queries = {
   helloU: () => "This is my hello from user",
   getUsers: async (_: any, _2: any, context: any) => {
     if (context && context.success) {
-      const allUsers = await UserService.getUsers()
-
-      return allUsers
+      return await UserService.getUsers()
     }
 
     throw new Error("User is not authorized")
