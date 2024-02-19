@@ -11,17 +11,18 @@ datasource db {
 }
 
 model User {
-  id              String         @id @default(uuid())
-  username        String         @unique
-  firstName       String         @map("first_name")
-  lastName        String?        @map("last_name")
-  profileImageURL String?        @map("profile_image_url")
-  email           String         @unique
+  id              String  @id @default(uuid())
+  username        String  @unique
+  firstName       String  @map("first_name")
+  lastName        String? @map("last_name")
+  profileImageURL String? @map("profile_image_url")
+  email           String  @unique
   password        String
   salt            String
-  conversations   Conversation[]
-  messages        Message[]
-  seenMessages    Message[]      @relation("Seen")
+
+  conversations Conversation[]
+  messages      Message[]
+  seenMessages  Message[]      @relation("Seen")
 
   posts     Post[]
   comments  Comment[]
@@ -40,27 +41,31 @@ model Conversation {
   messages      Message[]
   userIds       String[]  @unique
   users         User[]
+
+  @@map("conversations")
 }
 
 model Message {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
-  body      String?
+  body      String
 
   conversationId String
-  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   seen User[] @relation("Seen")
 
   senderId String
-  sender   User   @relation(fields: [senderId], references: [id])
+  sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
 }
 
 model Post {
   id        String    @id @default(uuid())
   content   String
   authorId  String
-  author    User      @relation(fields: [authorId], references: [id])
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   comments  Comment[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -72,9 +77,9 @@ model Comment {
   id          String   @id @default(uuid())
   text        String
   postId      String
-  post        Post     @relation(fields: [postId], references: [id])
+  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   commenterId String
-  commenter   User     @relation(fields: [commenterId], references: [id])
+  commenter   User     @relation(fields: [commenterId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

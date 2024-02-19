@@ -5,7 +5,9 @@ import ConversationService, {
 const queries = {
   async getConversations(_: any, _2: any, context: any) {
     if (context && context.success) {
-      return await ConversationService.getConversations()
+      const conversations = await ConversationService.getConversations()
+
+      return conversations
     }
 
     throw new Error("User is not authorized")
@@ -17,7 +19,12 @@ const mutations = {
     if (context && context.success) {
       const id = context.user.id
 
-      return await ConversationService.addConversation(payload, id)
+      const conversation = await ConversationService.addConversation(
+        payload,
+        id
+      )
+
+      return conversation
     }
 
     throw new Error("User is not authorized")
