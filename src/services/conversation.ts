@@ -6,6 +6,15 @@ export interface AddConversationPayload {
   userIds: string[]
 }
 
+export interface GetMessagesPayload {
+  conversationId: string
+}
+
+export interface AddMessagePayload {
+  body: string
+  conversationId: string
+}
+
 class ConversationService {
   public static getConversations() {
     return prismadb.conversation.findMany()
@@ -16,12 +25,45 @@ class ConversationService {
     id: string
   ) {
     const { name, isGroup, userIds } = payload
+    const allParticipants = [...userIds, id]
 
-    return prismadb.conversation.create({
+    const existingConversation = await prismadb.conversation.findUnique({
+      where: {
+        userIds: allParticipants,
+      },
+    })
+
+    if (!existingConversation) {
+      return await prismadb.conversation.create({
+        data: {
+          name,
+          isGroup,
+          userIds: allParticipants,
+        },
+      })
+    }
+
+    return existingConversation
+  }
+
+  public static async getMessages(payload: GetMessagesPayload) {
+    const { conversationId } = payload
+
+    return await prismadb.message.findMany({
+      where: {
+        conversationId,
+      },
+    })
+  }
+
+  public static async addMessage(payload: AddMessagePayload, id: string) {
+    const { body, conversationId } = payload
+
+    return await prismadb.message.create({
       data: {
-        name,
-        isGroup,
-        userIds: [...userIds, id],
+        body,
+        conversationId,
+        senderId: id,
       },
     })
   }
