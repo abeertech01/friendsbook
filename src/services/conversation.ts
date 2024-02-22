@@ -26,12 +26,16 @@ class ConversationService {
   ) {
     const { name, isGroup, userIds } = payload
     const allParticipants = [...userIds, id]
+    let existingConversation = undefined
 
-    const existingConversation = await prismadb.conversation.findUnique({
-      where: {
-        userIds: allParticipants,
-      },
-    })
+    const conversations = await prismadb.conversation.findMany()
+    if (conversations.length !== 0) {
+      existingConversation = conversations.find(
+        (conv) =>
+          conv.userIds.length === allParticipants.length &&
+          conv.userIds.every((cu) => allParticipants.includes(cu))
+      )
+    }
 
     if (!existingConversation) {
       return await prismadb.conversation.create({
